@@ -29,6 +29,7 @@ function createCell(textHtml) {
 }
 let playlistChosenId = "";
 function goBack() {
+    // Adding useless thing so that GitHub pages refreshes this file 
     window.location.replace(window.location.href.substring(0, window.location.href.indexOf("/")) + "/spotify-playlist-song-reorder/next.html?access_token=" + token);
 }
 function playlistAppend(json) {
