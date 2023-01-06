@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="/spotify-playlist-song-reorder/assets/customStyle.css" rel="stylesheet">
+</head>
+<body style="margin: 0px;">
+  <div style="margin: 15px;">
+  <div class="contentContainer" id="containerFirst">
+    <div  class="h-100 d-flex justify-content-center align-items-center contentHost limitPlaylistHeight">
+      <div id="playlistSelectorDiv">
+      <div style="padding: 30px;">
+        <h1 style="text-align: center;">Spotify Playlist Reorder</h1> <br>
+    <l>Choose a playlist from the following table:</l>
+    <div class="table-responsive">
+      <div class="table table-striped" style="height: 70vh;">    
+    <table class="table" style="color: white;">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Playlist name</th>
+            <th scope="col">Owner</th>
+            <th scope="col">Public</th>
+          </tr>
+          <tbody id="tableBody">
+            </tbody>
+        </thead>
+      </table>
+  </div>
+  </div>
+</div>
+  </div>
+  <div style="opacity: 0; display: none;" id="playlistImgDiv">
+    <div style="padding: 30px;">  
+      <div>
+        <img height="36px" width="36px" src="/spotify-playlist-song-reorder/assets/ic_fluent_arrow_circle_left_48_filled.svg" id="arrowImg" style="display: inline-block;" onclick="goBack()">
+        <h1 style="text-align: center;">Spotify Playlist Reorder</h1> <br>
+      </div>
+      <img height="350px" width="350px" class="img-thumbnail" id="playlistImg" src="https://i.scdn.co/image/ab67616d0000b27345e603b943d1ea99f4329208">
+      <h3 style="margin-top: 30px; text-align: center;" id="namePlaylist">Playlist Name</h3>
+      <div>
+          <l>Which criteria should be used to order your playlist?</l> <br>
+          <div class="alert alert-warning" role="alert" id="alert">
+            <div>
+              <l id="alertInfo">Fetching playlists items. Please wait. </l> <br>
+              <progress id="progressItem"></progress>
+            </div>
+          </div>
+          <div class="dropdown" style="text-align: center;">
+          <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="disableButton">
+              Choose criteria
+            </button>                          
+          <ul class="dropdown-menu" id="closeThis">
+              <li><a class="dropdown-item" onclick="chooseReorder(0)">Song name</a></li>
+              <li><a class="dropdown-item" onclick="chooseReorder(1)">Artist name</a></li>
+              <li><a class="dropdown-item" onclick="chooseReorder(3)">Album name</a></li>
+              <li><a class="dropdown-item" onclick="chooseReorder(2)">Added date</a></li>
+            </ul>            
+            </div>
+      </div>
+      <br> <br>
+  </div>
+</div>
+    </div>
+    </div>
+    <div class="infoToolbar" id="privacyTool">
+      <l>Privacy: All the data is elaborated on your device. Nothing is sent to a server.</l>
+  </div>
+  <div class="infoToolbar" id="imgTool">
+      <l>Image of <a href="https://unsplash.com/@imtiiiyaazz">Imtiyaz Ali</a> from Unsplash.</l>
+  </div>  
+  <div class="infoToolbar" id="gitTool">
+      <l>View on GitHub (click)</l>
+    </div>  
+  </div>  
+
+      <div class="bottomImg">
+          <img src="/spotify-playlist-song-reorder/assets/PrivacyLock.svg" height="36px" width="36px" id="privacyImg"> 
+          <img src="/spotify-playlist-song-reorder/assets/ic_fluent_image_48_filled.svg" height="36px" width="36px" id="imgIcon">
+          <img src="/spotify-playlist-song-reorder/assets/github-mark.svg" height="36px" width="36px" id="gitImg">
+      </div>
+      <script src="/spotify-playlist-song-reorder/js/infobar.js"></script>
+      <script src="/spotify-playlist-song-reorder/js//reorder.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</body>

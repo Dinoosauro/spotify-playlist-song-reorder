@@ -1,0 +1,53 @@
+body {
+    padding: 15px;
+    background-image: url(/spotify-playlist-song-reorder/assets/img.jpeg);
+    background-repeat: no-repeat;
+    background-position: center; 
+    background-size: cover;
+    overflow: hidden;
+}
+
+.contentContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    min-height: 100vh;
+}
+
+.contentHost {
+    -webkit-backdrop-filter: blur(16px) brightness(50%);
+    backdrop-filter: blur(16px) brightness(50%);
+    border-radius: 10px;
+    color: white;
+    transition: opacity 0.45s;
+}
+
+.infoToolbar {
+    position: absolute;
+    bottom: 80px;
+    background-color: rgb(30, 30, 30);
+    color: white;
+    margin-bottom: 40px;
+    padding-left: 10px;
+    padding-right: 50px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    border-radius: 8px;
+    opacity: 0;
+    visibility: collapse;
+    transition: opacity 0.45s;
+}
+
+.bottomImg {
+    position: absolute;
+    padding-bottom: 40px;
+    float: left;
+    bottom: 0;
+}
+.bottomImg:hover {
+    cursor: pointer;
+}
+.limitPlaylistHeight {
+    height: 80%;
+}
