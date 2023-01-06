@@ -6,7 +6,7 @@ askUserInfo.onload = function() {
     if (this.status == 200) userLoggedId = JSON.parse(this.responseText).id; else alert("An error occourred. Please refresh the page and retry.");
 }
 askUserInfo.send();
-history.pushState({}, null, window.location.href.substring(0, window.location.href.indexOf("/")) + "/next.html");
+history.pushState({}, null, window.location.href.substring(0, window.location.href.indexOf("/")) + "/spotify-playlist-song-reorder/next.html");
 function buildRequest(link) {
     let xmlHttp = new XMLHttpRequest();
     xmlHttp.open("GET", link);
@@ -29,7 +29,7 @@ function createCell(textHtml) {
 }
 let playlistChosenId = "";
 function goBack() {
-    window.location.replace(window.location.href.substring(0, window.location.href.indexOf("/")) + "/next.html?access_token=" + token);
+    window.location.replace(window.location.href.substring(0, window.location.href.indexOf("/")) + "/spotify-playlist-song-reorder/next.html?access_token=" + token);
 }
 function playlistAppend(json) {
     let jsonParsed = JSON.parse(json);
