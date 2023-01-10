@@ -224,8 +224,17 @@ function newPlaylistOptionShow(state) {
     document.getElementById("newPlaylistDiv").style.display = displayOption;
     let notSelect = "border-radius: 25px; color: white";
     let select = "border-radius: 25px;";
-    if (state) document.getElementById("currentOrderSwitch").style = notSelect; else document.getElementById("currentOrderSwitch").style = select;
-    if (state) document.getElementById("newOrderSwitch").style = select; else document.getElementById("newOrderSwitch").style = notSelect;
+    if (state) {
+        document.getElementById("currentOrderSwitch").style = notSelect; 
+        document.getElementById("newOrderSwitch").style = select + "; float: right";
+        document.getElementById("currentOrderSwitch").className = "btn w-50 leftSwitch";
+        document.getElementById("newOrderSwitch").className = "btn w-50 btn-primary rightSwitch"
+    } else {
+        document.getElementById("currentOrderSwitch").style = select;
+        document.getElementById("newOrderSwitch").style = notSelect + "; float: right";
+        document.getElementById("newOrderSwitch").className = "btn w-50 rightSwitch";
+        document.getElementById("currentOrderSwitch").className = "btn w-50 btn-primary leftSwitch"
+}
 
 }
 let positionItem = 0;
