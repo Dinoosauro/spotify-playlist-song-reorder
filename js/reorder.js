@@ -1,15 +1,15 @@
 let token = window.location.href.substring(window.location.href.indexOf("access_token=")).replace("access_token=", "");
 if (token.startsWith("http")) window.location = "https://accounts.spotify.com/authorize?client_id=943d75438c2648d89ad14e1c57e4cac3&redirect_uri=" + encodeURIComponent("https://dinoosauro.github.io/spotify-playlist-song-reorder/next.html") + "&scope=playlist-modify-public%20playlist-modify-private%20playlist-read-private&response_type=token";
 let userLoggedId = "";
-let askUserInfo = buildRequest("https://api.spotify.com/v1/me");
+let askUserInfo = buildRequest("https://api.spotify.com/v1/me", false);
 askUserInfo.onload = function() {
     if (this.status == 200) userLoggedId = JSON.parse(this.responseText).id; else alert("An error occourred. Please refresh the page and retry.");
 }
 askUserInfo.send();
 history.pushState({}, null, window.location.href.substring(0, window.location.href.indexOf("/")) + "/spotify-playlist-song-reorder/next.html");
-function buildRequest(link) {
+function buildRequest(link, usePost) {
     let xmlHttp = new XMLHttpRequest();
-    xmlHttp.open("GET", link);
+    if (!usePost) xmlHttp.open("GET", link); else xmlHttp.open("POST", link);
     xmlHttp.setRequestHeader("Content-Type", "application/json");
     xmlHttp.setRequestHeader("Accept", "application/json");
     xmlHttp.setRequestHeader("Authorization", "Bearer " + token);
@@ -67,7 +67,7 @@ function showPlaylistInfo(lookid, playlistName) {
 }
 let jsonPlaylist = "";
 function nextGet(valueEdit, link, firstDownload) {
-    let newLink = buildRequest(link);
+    let newLink = buildRequest(link, false);
     newLink.onload = function () {
         if (this.status == 200) {
             let tempJson = JSON.parse(newLink.responseText);
@@ -163,15 +163,73 @@ function chooseReorder(chooseId) {
 }
 let reorderTrack = Array(1).fill("");
 let firstPositionItem = Array(1).fill("");
+let displayOption = "none";
 function adaptOtherContent(originString) {
     for (let i = 0; i < originString.length; i++) {
         let lookIntoId = originString[i].substring(originString[i].lastIndexOf("\"") + 1);
         firstPositionItem[i] = lookIntoId;
         reorderTrack[i] = trackId[lookIntoId];
     }
-    moveElements();
+    if (displayOption == "none") moveElements(); else createNewPlaylist();
+}
+// Create new playlist part.
+function createNewPlaylist() {
+    let createCall = buildRequest("https://api.spotify.com/v1/users/" + userLoggedId + "/playlists", true);
+    createCall.onload = function() {
+        if (this.status == 200 || this.status == 201) addItems(JSON.parse(this.responseText).id); else alert("An error occourred when creating the playlist (" + this.status + ")");
+    }
+    createCall.send("{\"name\": \"" + (document.getElementById("playlistName").value).replaceAll("\"", "\\\"") + "\", \"description\": \"Reordered with spotify-playlist-song-reorder\", \"public\": false}");
+}
+let currentCall = 0;
+let maxCall = 80;
+function addItems(playlistId) {
+    console.log(playlistId);
+    let uriId = "";
+    document.getElementById("progressItem").value = currentCall;
+    if (maxCall > reorderTrack.length) maxCall = reorderTrack.length;
+    for (let i = currentCall; i < maxCall; i++) {
+        if (reorderTrack[i].indexOf("spotify:local") !== -1) continue;
+        uriId = uriId + "," + reorderTrack[i].substring(0, reorderTrack[i].indexOf("\""));
+    }
+    uriId = uriId.substring(1);
+    let createPost = buildRequest("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?uris=" + encodeURIComponent(uriId), true);
+    createPost.onload = function() {
+        if (this.status == 200 || this.status == 201) {
+            currentCall = maxCall;
+            maxCall += 80;
+            setTimeout(function() {
+                addItems(playlistId);
+            }, 500)        
+        } else if (this.status == 429) {
+            document.getElementById("alertInfo").innerHTML = "Spotify has applied a rate limit. A new attempt will be executed in 10 seconds. ["+ maxCall + "]";
+            setTimeout(function () {
+                addItems(playlistId);
+            }, 10000)
+        } 
+        else if (maxCall >= reorderTrack.length) {
+            document.getElementById("alert").className = "alert alert-success";
+            document.getElementById("alertInfo").innerHTML = "Ordering completed :D";
+        } else {
+            console.error(createPost);
+            document.getElementById("alertInfo").innerHTML = "An unexpected error occourred. A new attempt will be executed in 10 seconds. [" + maxCall + "]";
+            setTimeout(function () {
+                addItems(playlistId);
+            }, 10000);
+        }
+    }
+    createPost.send();
+}
+function newPlaylistOptionShow(state) {
+    if (state) displayOption = "inline"; else displayOption = "none";
+    document.getElementById("newPlaylistDiv").style.display = displayOption;
+    let notSelect = "border-radius: 25px; color: white";
+    let select = "border-radius: 25px;";
+    if (state) document.getElementById("currentOrderSwitch").style = notSelect; else document.getElementById("currentOrderSwitch").style = select;
+    if (state) document.getElementById("newOrderSwitch").style = select; else document.getElementById("newOrderSwitch").style = notSelect;
+
 }
 let positionItem = 0;
+// Reroder current playlist part:
 function rearrangeItems() {
     let x = interestingStuff.splice(firstPositionItem[positionItem], 1);
     interestingStuff.splice(positionItem, 0, x[0]);
@@ -215,5 +273,4 @@ function moveElements() {
     let prepareString = "{\"range_start\": " + firstPositionItem[positionItem] + ",\"insert_before\": " + (positionItem) + ",\"range_length\": 1}";
         putHttp.send(prepareString);
 }
-
 startPlaylistBuild();
