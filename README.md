@@ -19,3 +19,5 @@ Now, just like the playlist reordering process, you should see the singer image.
 - Background image from [Unsplash](https://unsplash.com/photos/LxBMsvUPAgo)
 ## Known issues
 - In a really long playlist, a really few items might not be moved. I'm looking to solve this issue.
+## Privacy
+All the data is elaborated on your device. The only connections made are between your device and the Spotify server. No data is stored to an external server.
