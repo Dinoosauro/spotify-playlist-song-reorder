@@ -11,18 +11,31 @@
       <div id="playlistSelectorDiv">
       <div style="padding: 30px;">
         <h1 style="text-align: center;">Spotify Playlist Reorder</h1> <br>
-    <l>Choose a playlist from the following table:</l>
+        <div class="switchContainer">
+          <div style="padding: 10px">
+              <button type="button" class="btn btn-primary w-50 leftSwitch" style="border-radius: 25px;" id="createPlaylistSwitch" onclick="newPlaylistOptionShow(false, false, 'createPlaylistSwitch', 'createArtistSwitch')">Convert Playlist</button>
+              <button type="button" class="btn w-50 rightSwitch" style="border-radius: 25px; color: white" id="createArtistSwitch" onclick="newPlaylistOptionShow(true, false, 'createPlaylistSwitch', 'createArtistSwitch')">Create Author Playlist</button>
+                  </div>
+      </div>
+    <l id="IstructionHeader">Choose a playlist from the following table:</l>
+    <input type="text" class="form-control" id="searchArtist" placeholder="My New Reodered Playlist" oninput="searchArtist()" style="display: none">
     <div class="table-responsive">
       <div class="table table-striped" style="height: 70vh;">    
     <table class="table" style="color: white;">
         <thead>
           <tr>
             <th scope="col">#</th>
-            <th scope="col">Playlist name</th>
-            <th scope="col">Owner</th>
-            <th scope="col">Public</th>
+            <th scope="col" id="firstHeader">Playlist name</th>
+            <th scope="col" id="secondHeader">Owner</th>
+            <th scope="col" id="thirdHeader">Public</th>
           </tr>
           <tbody id="tableBody">
+            <tr onclick="likeFetch()">
+              <td scope="col">0</td>
+              <td scope="col">Your Liked Songs</td>
+              <td scope="col">-</td>
+              <td scope="col">-</td>
+            </tr>  
             </tbody>
         </thead>
       </table>
@@ -40,10 +53,10 @@
       <img height="350px" width="350px" class="img-thumbnail" id="playlistImg" src="https://i.scdn.co/image/ab67616d0000b27345e603b943d1ea99f4329208">
       <h3 style="margin-top: 30px; text-align: center;" id="namePlaylist">Playlist Name</h3>
       <div>
-        <div class="switchContainer">
+        <div class="switchContainer" id="newPlaylistSwitch">
           <div style="padding: 10px">
-              <button type="button" class="btn btn-primary w-50 leftSwitch" style="border-radius: 25px;" id="currentOrderSwitch" onclick="newPlaylistOptionShow(false)">Order current</button>
-              <button type="button" class="btn w-50 rightSwitch" style="border-radius: 25px; color: white" id="newOrderSwitch" onclick="newPlaylistOptionShow(true)">Create new</button>
+              <button type="button" class="btn btn-primary w-50 leftSwitch" style="border-radius: 25px;" id="currentOrderSwitch" onclick="newPlaylistOptionShow(false, true, 'currentOrderSwitch', 'newOrderSwitch')">Order current</button>
+              <button type="button" class="btn w-50 rightSwitch" style="border-radius: 25px; color: white" id="newOrderSwitch" onclick="newPlaylistOptionShow(true, true, 'currentOrderSwitch', 'newOrderSwitch')">Create new</button>
                   </div>
       </div>
 <div>
@@ -58,6 +71,10 @@
             <label for="playlistName" class="form-label">What should be the new playlist's name?</label>
           <input type="text" class="form-control" id="playlistName" placeholder="My New Reodered Playlist">
           </div>
+          <div class="form-check" id="hideIfNotArtistSearch" style="visibility: hidden;">
+            <input class="form-check-input" type="checkbox" value="" id="singleTrack">
+            <label class="form-check-label" for="singleTrack">Don't add duplicates (check by name)</label>
+          </div>          
           <div class="dropdown" style="text-align: center;">
           <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" id="disableButton">
               Choose criteria

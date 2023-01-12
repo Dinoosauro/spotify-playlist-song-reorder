@@ -51,3 +51,14 @@ body {
 .limitPlaylistHeight {
     height: 80%;
 }
+.switchContainer {
+    backdrop-filter: blur(25px) brightness(50%); 
+    border-radius: 25px; 
+    height: 60px;
+}
+.leftSwitch {
+    float: left; 
+}
+.rightSwitch {
+    float: right; 
+}
