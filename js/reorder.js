@@ -1,15 +1,15 @@
 let token = window.location.href.substring(window.location.href.indexOf("access_token=")).replace("access_token=", "");
 if (token.startsWith("http")) window.location = "https://accounts.spotify.com/authorize?client_id=943d75438c2648d89ad14e1c57e4cac3&redirect_uri=" + encodeURIComponent("https://dinoosauro.github.io/spotify-playlist-song-reorder/next.html") + "&scope=playlist-modify-public%20playlist-modify-private%20playlist-read-private&response_type=token";
 let userLoggedId = "";
-let currentCountry = "US"; 
+let currentCountry = "US";
 let askUserInfo = buildRequest("https://api.spotify.com/v1/me", false);
 let showArtistSelection = false;
 if (window.location.href.indexOf("?useArtistSort") !== -1) showArtistSelection = true;
-askUserInfo.onload = function() {
+askUserInfo.onload = function () {
     if (this.status == 200) {
         let parseUserInfo = JSON.parse(this.responseText);
-        userLoggedId = parseUserInfo.id; 
-        currentCountry = parseUserInfo.country; 
+        userLoggedId = parseUserInfo.id;
+        currentCountry = parseUserInfo.country;
     } else {
         alert("An error occourred. Please refresh the page and retry.");
     }
@@ -66,7 +66,7 @@ function playlistAppend(json) {
         tableRow.appendChild(createCell(jsonParsed.items[i].owner.display_name));
         tableRow.appendChild(createCell(jsonParsed.items[i].public));
         imageLinkCache[i] = jsonParsed.items[i].images[0].url;
-        usablePlaylistId++; 
+        usablePlaylistId++;
         tableRow.onclick = function () {
             useLikeFunction = false;
             showPlaylistInfo(i, jsonParsed.items[i].name);
@@ -95,7 +95,7 @@ function nextGet(valueEdit, link, firstDownload) {
             let tempJson = JSON.parse(newLink.responseText);
             if ((parseInt(document.getElementById("progressItem").value) + tempJson.limit) < tempJson.total) {
                 document.getElementById("progressItem").value = parseInt(document.getElementById("progressItem").value) + tempJson.limit;
-            }  else {
+            } else {
                 document.getElementById("progressItem").value = tempJson.total;
             }
             document.getElementById("progressItem").max = tempJson.total;
@@ -129,7 +129,7 @@ function nextGet(valueEdit, link, firstDownload) {
             }
         } else if (this.status == 429 || this.status == 503) {
             if (valueEdit == 1 || valueEdit == 2) document.getElementById("alertInfo").innerHTML = "Spotify has applied a rate limit. A new attempt will be executed in 10 seconds."; else alert("Spotify has applied a rate limit. A new attempt will be executed in 10 seconds");
-            setTimeout(function() {
+            setTimeout(function () {
                 nextGet(valueEdit, link, firstDownload);
             }, 10000);
         } else {
@@ -208,7 +208,7 @@ function adaptOtherContent(originString) {
 // Create new playlist part.
 function createNewPlaylist() {
     let createCall = buildRequest("https://api.spotify.com/v1/users/" + userLoggedId + "/playlists", true);
-    createCall.onload = function() {
+    createCall.onload = function () {
         if (document.getElementById("singleTrack").checked) deleteDuplicates();
         if (this.status == 200 || this.status == 201) addItems(JSON.parse(this.responseText).id); else alert("An error occourred when creating the playlist (" + this.status + ")");
     }
@@ -217,7 +217,7 @@ function createNewPlaylist() {
 function deleteDuplicates() {
     // I won't use Set since the item should be deleted from an array only if the corresponding item is found on the other.
     for (let i = 0; i < songName.length; i++) {
-        for (let x = i+1; x < songName.length; x++) {
+        for (let x = i + 1; x < songName.length; x++) {
             if (songName[i].substring(0, songName[i].indexOf("\"")) == songName[x].substring(0, songName[x].indexOf("\""))) {
                 reorderTrack.splice(i, 1);
             }
@@ -236,18 +236,18 @@ function addItems(playlistId) {
     }
     uriId = uriId.substring(1);
     let createPost = buildRequest("https://api.spotify.com/v1/playlists/" + playlistId + "/tracks?uris=" + encodeURIComponent(uriId), true);
-    createPost.onload = function() {
+    createPost.onload = function () {
         if (this.status == 200 || this.status == 201) {
             currentCall = maxCall;
             maxCall += 80;
-            setTimeout(function() {
+            setTimeout(function () {
                 addItems(playlistId);
-            }, 500)        
+            }, 500)
         } else if (maxCall >= reorderTrack.length) {
             document.getElementById("alert").className = "alert alert-success";
             document.getElementById("alertInfo").innerHTML = "Ordering completed :D";
         } else if (this.status == 429 || this.status == 503) {
-            document.getElementById("alertInfo").innerHTML = "Spotify has applied a rate limit. A new attempt will be executed in 10 seconds. ["+ maxCall + "]";
+            document.getElementById("alertInfo").innerHTML = "Spotify has applied a rate limit. A new attempt will be executed in 10 seconds. [" + maxCall + "]";
             setTimeout(function () {
                 addItems(playlistId);
             }, 10000)
@@ -275,17 +275,17 @@ function newPlaylistOptionShow(state, playlistConvertStatus, leftSwitch, rightSw
         document.getElementById("searchArtist").style.display = "none";
         document.getElementById("tableBody").innerHTML = "";
         startPlaylistBuild();
-    } 
+    }
     if (!playlistConvertStatus) {
         document.getElementById("firstHeader").innerHTML = applyArray[0];
         document.getElementById("secondHeader").innerHTML = applyArray[1];
         document.getElementById("thirdHeader").innerHTML = applyArray[2];
         document.getElementById("IstructionHeader").innerHTML = instructionHeader;
-    } 
+    }
     let notSelect = "border-radius: 25px; color: white";
     let select = "border-radius: 25px;";
     if (state) {
-        document.getElementById(leftSwitch).style = notSelect; 
+        document.getElementById(leftSwitch).style = notSelect;
         document.getElementById(rightSwitch).style = select + "; float: right";
         document.getElementById(leftSwitch).className = "btn w-50 leftSwitch";
         document.getElementById(rightSwitch).className = "btn w-50 btn-primary rightSwitch"
@@ -294,7 +294,7 @@ function newPlaylistOptionShow(state, playlistConvertStatus, leftSwitch, rightSw
         document.getElementById(rightSwitch).style = notSelect + "; float: right";
         document.getElementById(rightSwitch).className = "btn w-50 rightSwitch";
         document.getElementById(leftSwitch).className = "btn w-50 btn-primary leftSwitch"
-}
+    }
 
 }
 let positionItem = 0;
@@ -339,7 +339,7 @@ function moveElements() {
         }
     }
     let prepareString = "{\"range_start\": " + firstPositionItem[positionItem] + ",\"insert_before\": " + (positionItem) + ",\"range_length\": 1}";
-        putHttp.send(prepareString);
+    putHttp.send(prepareString);
 }
 // Artist discography part
 // move this value over when creating the UI
@@ -361,7 +361,7 @@ function artistAlbumFetch() {
 }
 function fetchAlbumData(link, artistId, releaseDate, nameAlbum) {
     let startRequest = buildRequest(link);
-    startRequest.onload = function() {
+    startRequest.onload = function () {
         if (this.status == 200 || this.status == 201) {
             let parseRequest = JSON.parse(this.responseText);
             for (let i = 0; i < Object.keys(parseRequest.items).length; i++) {
@@ -371,8 +371,8 @@ function fetchAlbumData(link, artistId, releaseDate, nameAlbum) {
                 }
                 if (shouldSkip) continue;
                 if (parseRequest.items[i].artists[0].name !== null) artistAdded[keepProgression] = parseRequest.items[i].artists[0].name + "\"" + keepProgression; else artistAdded[keepProgression] = "ZZZZZZZZZZ\"" + keepProgression;
-                datePublication[keepProgression] = releaseDate;
-                albumName[keepProgression] = nameAlbum;
+                datePublication[keepProgression] = releaseDate + "\"" + keepProgression;
+                albumName[keepProgression] = nameAlbum + "\"" + keepProgression;
                 if (parseRequest.items[i].name !== null) songName[keepProgression] = parseRequest.items[i].name + "\"" + keepProgression; else songName[keepProgression] = "ZZZZZZZZZ\"" + keepProgression;
                 trackId[keepProgression] = parseRequest.items[i].uri + "\"" + keepProgression;
                 artistAdded[keepProgression] = artistAdded[keepProgression].toLowerCase();
@@ -385,15 +385,15 @@ function fetchAlbumData(link, artistId, releaseDate, nameAlbum) {
             if (parseRequest.next !== null) {
                 fetchAlbumData(parseRequest.next, artistId, releaseDate, nameAlbum);
                 return;
-            } 
+            }
             document.getElementById("progressItem").value = requestProgress;
             document.getElementById("alertInfo").innerHTML = "Fetching playlists items. Please wait. [" + requestProgress + "]";
-            setTimeout(function() {
+            setTimeout(function () {
                 if (requestProgress < Object.keys(parseArtist.items).length) fetchAlbumData("https://api.spotify.com/v1/albums/" + parseArtist.items[requestProgress].id + "/tracks", artistSpotiId, parseArtist.items[requestProgress].release_date, parseArtist.items[requestProgress].name); else makeButtonAvailable();
             }, 350);
         } else if (this.status == 429 || this.status == 503) {
             document.getElementById("alertInfo").innerHTML = "Spotify has applied a rate limit. A new attempt will be executed in 10 seconds. [" + requestProgress + "]";
-            setTimeout(function() {
+            setTimeout(function () {
                 fetchAlbumData(link, artistId, releaseDate, nameAlbum);
             }, 10000)
         } else {
@@ -405,50 +405,50 @@ function fetchAlbumData(link, artistId, releaseDate, nameAlbum) {
 }
 function searchArtist() {
     let searchValue = document.getElementById("searchArtist").value;
-    setTimeout(function() {
+    setTimeout(function () {
         if (searchValue == document.getElementById("searchArtist").value) {
             document.getElementById("tableBody").innerHTML = "";
             startSearch(searchValue);
         }
-    },500);
+    }, 500);
 }
 function startSearch(input) {
     let searchRequest = buildRequest("https://api.spotify.com/v1/search?q=" + input + "&type=artist", false);
-    searchRequest.onload = function() {
+    searchRequest.onload = function () {
         if (this.status == 200 || this.status == 201) {
             let parseElement = JSON.parse(this.responseText);
             for (let i = 0; i < Object.keys(parseElement.artists.items).length; i++) {
                 try {
-                let tableRow = document.createElement("tr");
-                let artistImg = document.createElement("img");
-                artistImg.style.height = "50px";
-                artistImg.style.width = "50px";
-                artistImg.src = parseElement.artists.items[i].images[0].url;
-                tableRow.appendChild(createNumberCell(i));
-                tableRow.appendChild(createCell(artistImg.outerHTML));
-                tableRow.appendChild(createCell(parseElement.artists.items[i].name));
-                tableRow.appendChild(createCell(parseElement.artists.items[i].genres[0]));
-                tableRow.onclick = function() {
-                    artistSpotiId = parseElement.artists.items[i].id;
-                    useLikeFunction = true;
-                    newPlaylistOptionShow(true, true, 'currentOrderSwitch', 'newOrderSwitch');
-                    showPlaylistInfo(i, parseElement.artists.items[i].name, parseElement.artists.items[i].images[0].url);  
-                    document.getElementById("newPlaylistSwitch").style.display = "none";   
-                    document.getElementById("hideIfNotArtistSearch").style.visibility = "visible";  
-                    nextGet(2, "https://api.spotify.com/v1/artists/" + artistSpotiId + "/albums?market=IT", true);
+                    let tableRow = document.createElement("tr");
+                    let artistImg = document.createElement("img");
+                    artistImg.style.height = "50px";
+                    artistImg.style.width = "50px";
+                    artistImg.src = parseElement.artists.items[i].images[0].url;
+                    tableRow.appendChild(createNumberCell(i));
+                    tableRow.appendChild(createCell(artistImg.outerHTML));
+                    tableRow.appendChild(createCell(parseElement.artists.items[i].name));
+                    tableRow.appendChild(createCell(parseElement.artists.items[i].genres[0]));
+                    tableRow.onclick = function () {
+                        artistSpotiId = parseElement.artists.items[i].id;
+                        useLikeFunction = true;
+                        newPlaylistOptionShow(true, true, 'currentOrderSwitch', 'newOrderSwitch');
+                        showPlaylistInfo(i, parseElement.artists.items[i].name, parseElement.artists.items[i].images[0].url);
+                        document.getElementById("newPlaylistSwitch").style.display = "none";
+                        document.getElementById("hideIfNotArtistSearch").style.visibility = "visible";
+                        nextGet(2, "https://api.spotify.com/v1/artists/" + artistSpotiId + "/albums?market=IT", true);
+                    }
+                    document.getElementById("tableBody").appendChild(tableRow);
+                } catch (ex) {
+                    console.error(ex);
                 }
-                document.getElementById("tableBody").appendChild(tableRow);
-            } catch (ex) {
-                console.error(ex);
-            }
             }
         } else if (this.status == 429 || this.status == 201) {
             alert("Spotify has applied a rate limit. A new attempt will be executed in 10 seconds");
-            setTimeout(function() {
+            setTimeout(function () {
                 searchArtist();
             }, 10000);
         }
-         else {
+        else {
             alert("An unexpected error occourred. Please try again in a few seconds. [" + this.status + "]");
             console.error(searchRequest);
         }
