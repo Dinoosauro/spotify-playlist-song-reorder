@@ -10,7 +10,7 @@
     <div  class="h-100 d-flex justify-content-center align-items-center contentHost limitPlaylistHeight">
       <div id="playlistSelectorDiv">
       <div style="padding: 30px;">
-        <h1 style="text-align: center;">Spotify Playlist Reorder</h1> <br>
+        <h1 style="text-align: center;" id="firstTitle">Spotify Playlist Reorder</h1> <br>
         <div class="switchContainer">
           <div style="padding: 10px">
               <button type="button" class="btn btn-primary w-50 leftSwitch" style="border-radius: 25px;" id="createPlaylistSwitch" onclick="newPlaylistOptionShow(false, false, 'createPlaylistSwitch', 'createArtistSwitch')">Convert Playlist</button>
@@ -18,7 +18,13 @@
                   </div>
       </div>
     <l id="IstructionHeader">Choose a playlist from the following table:</l>
-    <input type="text" class="form-control" id="searchArtist" placeholder="My New Reodered Playlist" oninput="searchArtist()" style="display: none">
+    <div id="artistDiscSpecific" style="display: none">
+    <input type="text" class="form-control" id="searchArtist" placeholder="My New Reodered Playlist" oninput="searchArtist()">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="noCompilation">
+      <label class="form-check-label" for="noCompilation">Don't fetch artist compilations</label>
+    </div>      
+  </div>    
     <div class="table-responsive">
       <div class="table table-striped" style="height: 70vh;">    
     <table class="table" style="color: white;">
@@ -47,7 +53,7 @@
     <div style="padding: 30px;">  
       <div>
         <img height="36px" width="36px" src="/spotify-playlist-song-reorder/assets/ic_fluent_arrow_circle_left_48_filled.svg" id="arrowImg" style="display: inline-block;" onclick="goBack()">
-        <h1 style="text-align: center;">Spotify Playlist Reorder</h1> <br>
+        <h1 style="text-align: center;" id="secondTitle">Spotify Playlist Reorder</h1> <br>
       </div>
       <div style="height: 70vh; overflow-y: scroll;">
       <img height="350px" width="350px" class="img-thumbnail" id="playlistImg" src="https://i.scdn.co/image/ab67616d0000b27345e603b943d1ea99f4329208">

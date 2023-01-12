@@ -1,42 +1,42 @@
 <!DOCTYPE html>
+
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
     <link href="/spotify-playlist-song-reorder/assets/customStyle.css" rel="stylesheet">
 </head>
+
 <body style="margin: 0px;">
     <div style="margin: 15px;">
-    <div class="contentContainer">
-    <div class="h-100 d-flex justify-content-center align-items-center contentHost">
-        <div style="padding: 30px;">
-        <h1>Spotify Playlist Reorder</h1> <br> 
-        <i>Reorder all of your Spotify playlists</i> <br> <br>
-        <button type="button" class="btn btn-primary align-middle" id="button">Connect to Spotify</button> 
-        </div>  
-    </div>
-</div>
+        <div class="contentContainer">
+            <div class="h-100 d-flex justify-content-center align-items-center contentHost">
+                <div style="padding: 30px;">
+                    <h1 id="title">Spotify Playlist Reorder</h1> <br>
+                    <i id="desc">Reorder all of your Spotify playlists</i> <br> <br>
+                    <button type="button" class="btn btn-primary align-middle" id="button">Connect to Spotify</button>
+                </div>
+            </div>
+        </div>
 
-    <br>
-    <div class="infoToolbar" id="privacyTool">
-        <l>Privacy: All the data is elaborated on your device. Nothing is sent to a server.</l>
-    </div>
-    <div class="infoToolbar" id="imgTool">
-        <l>Image of <a href="https://unsplash.com/@imtiiiyaazz">Imtiyaz Ali</a> from Unsplash.</l>
-    </div>  
-    <div class="infoToolbar" id="gitTool">
-        <l>View on GitHub (click)</l>
-    </div>  
+        <br>
+        <div class="infoToolbar" id="privacyTool">
+            <l>Privacy: All the data is elaborated on your device. Nothing is sent to a server.</l>
+        </div>
+        <div class="infoToolbar" id="imgTool">
+            <l>Image of <a href="https://unsplash.com/@imtiiiyaazz">Imtiyaz Ali</a> (click) from Unsplash.</l>
+        </div>
+        <div class="infoToolbar" id="gitTool">
+            <l>View on GitHub (click)</l>
+        </div>
 
         <div class="bottomImg">
-            <img src="/spotify-playlist-song-reorder/assets/PrivacyLock.svg" height="36px" width="36px" id="privacyImg"> 
-            <img src="/spotify-playlist-song-reorder/assets/ic_fluent_image_48_filled.svg" height="36px" width="36px" id="imgIcon">
+            <img src="/spotify-playlist-song-reorder/assets/PrivacyLock.svg" height="36px" width="36px" id="privacyImg">
+            <img src="/spotify-playlist-song-reorder/assets/ic_fluent_image_48_filled.svg" height="36px" width="36px"
+                id="imgIcon">
             <img src="/spotify-playlist-song-reorder/assets/github-mark.svg" height="36px" width="36px" id="gitImg">
         </div>
     </div>
-    <script>
-        document.getElementById("button").onclick = function() {
-            window.location = "https://accounts.spotify.com/authorize?client_id=943d75438c2648d89ad14e1c57e4cac3&redirect_uri=" + encodeURIComponent("https://dinoosauro.github.io/spotify-playlist-song-reorder/next.html") + "&scope=playlist-modify-public%20user-library-read%20playlist-modify-private%20playlist-read-private&response_type=token";
-        }
-        </script>
-        <script src="/spotify-playlist-song-reorder/js/infobar.js"></script>
+    <script src="/spotify-playlist-song-reorder/js/start.js"></script>
+    <script src="/spotify-playlist-song-reorder/js/infobar.js"></script>
 </body>

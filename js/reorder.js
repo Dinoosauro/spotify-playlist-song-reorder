@@ -69,7 +69,7 @@ function playlistAppend(json) {
         usablePlaylistId++;
         tableRow.onclick = function () {
             useLikeFunction = false;
-            showPlaylistInfo(i, jsonParsed.items[i].name);
+            showPlaylistInfo(i, jsonParsed.items[i].name, "");
             currentSnapshotId = jsonParsed.items[i].snapshot_id;
             playlistChosenId = jsonParsed.items[i].id;
             nextGet(1, "https://api.spotify.com/v1/playlists/" + jsonParsed.items[i].id + "/tracks", true);
@@ -228,7 +228,9 @@ let currentCall = 0;
 let maxCall = 80;
 function addItems(playlistId) {
     let uriId = "";
+    document.getElementById("progressItem").max = reorderTrack.length;
     document.getElementById("progressItem").value = currentCall;
+    document.getElementById("alertInfo").innerHTML = "Adding elements to playlist [" + currentCall + "]";
     if (maxCall > reorderTrack.length) maxCall = reorderTrack.length;
     for (let i = currentCall; i < maxCall; i++) {
         if (reorderTrack[i].indexOf("spotify:local") !== -1) continue;
@@ -269,11 +271,15 @@ function newPlaylistOptionShow(state, playlistConvertStatus, leftSwitch, rightSw
     if (!playlistConvertStatus && state) {
         applyArray = ["Image", "Name", "Genre"];
         instructionHeader = "Write the name of the artist. You'll see the search results in the following table.";
-        document.getElementById("searchArtist").style.display = "inline";
+        document.getElementById("artistDiscSpecific").style.display = "inline";
         document.getElementById("tableBody").innerHTML = "";
+        document.getElementById("secondTitle").innerHTML = "Spotify Discography Playlist";
+        document.getElementById("firstTitle").innerHTML = "Spotify Discography Playlist";
     } else if (!playlistConvertStatus && !state) {
-        document.getElementById("searchArtist").style.display = "none";
+        document.getElementById("artistDiscSpecific").style.display = "none";
         document.getElementById("tableBody").innerHTML = "";
+        document.getElementById("secondTitle").innerHTML = "Spotify Playlist Reorder";
+        document.getElementById("firstTitle").innerHTML = "Spotify Playlist Reorder";
         startPlaylistBuild();
     }
     if (!playlistConvertStatus) {
@@ -435,7 +441,10 @@ function startSearch(input) {
                         showPlaylistInfo(i, parseElement.artists.items[i].name, parseElement.artists.items[i].images[0].url);
                         document.getElementById("newPlaylistSwitch").style.display = "none";
                         document.getElementById("hideIfNotArtistSearch").style.visibility = "visible";
-                        nextGet(2, "https://api.spotify.com/v1/artists/" + artistSpotiId + "/albums?market=IT", true);
+                        document.getElementById("disableButton").className = "btn btn-secondary dropdown-toggle disabled";
+                        let apiLink = "https://api.spotify.com/v1/artists/" + artistSpotiId + "/albums?market=IT";
+                        if (document.getElementById("noCompilation").checked) apiLink = apiLink + "&include_groups=album%2Csingle%2Cappears_on";
+                        nextGet(2, apiLink, true);
                     }
                     document.getElementById("tableBody").appendChild(tableRow);
                 } catch (ex) {
